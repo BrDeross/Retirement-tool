@@ -74,8 +74,7 @@
       gap: 16px;
     }
 
-  
-</div>
+    .logo-box {
       width: 72px;
       height: 72px;
       border-radius: 20px;
@@ -93,8 +92,7 @@
       overflow: hidden;
     }
 
-     <div class="logo-box">
-  <img src="medi-solutions-logo.png" alt="Medi-Solutions Insurance Agency">
+    .logo-box img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -215,20 +213,21 @@
     }
 
     select {
-      background-color: #1b1b23;
-      color: #f5f1e8;
+      background-color: #f5f1e8;
+      color: #161616;
       cursor: pointer;
-      background-image: linear-gradient(45deg, transparent 50%, #f0d98b 50%), linear-gradient(135deg, #f0d98b 50%, transparent 50%);
+      background-image: linear-gradient(45deg, transparent 50%, #8b6b12 50%), linear-gradient(135deg, #8b6b12 50%, transparent 50%);
       background-position: calc(100% - 22px) calc(50% - 3px), calc(100% - 16px) calc(50% - 3px);
       background-size: 6px 6px, 6px 6px;
       background-repeat: no-repeat;
       padding-right: 42px;
+      border: 1px solid rgba(212,175,55,0.35);
     }
 
     select option,
     select optgroup {
-      background: #1b1b23;
-      color: #f5f1e8;
+      background: #f5f1e8;
+      color: #161616;
     }
 
     input::placeholder,
@@ -237,6 +236,7 @@
     }
 
     input:focus, select:focus, textarea:focus {
+      color: #161616;
       border-color: rgba(212,175,55,0.5);
       box-shadow: 0 0 0 4px rgba(212,175,55,0.08);
     }
@@ -877,6 +877,7 @@
 
     <section class="card contact-card" style="margin-top:22px;">
       <h2>Office Information</h2>
+      <p>Use the settings section in the code to update the advisor name, booking link, phone number, email, and website. That lets you reuse the same page for different agents without rewriting the full file.</p>
       <p><strong style="color:var(--text)">Phone:</strong> <span id="officePhoneDisplay">732-308-9500</span></p>
       <p><strong style="color:var(--text)">Website:</strong> <span id="officeWebsiteDisplay">www.medi-solutions.org</span></p>
       <p><strong style="color:var(--text)">Email:</strong> <span id="officeEmailDisplay">your@email.com</span></p>
@@ -1127,11 +1128,11 @@ This is an educational planning summary, not a quote or guarantee. Please reach 
     }
 
     const SITE_CONFIG = {
-      advisorName: 'Brian DeRoss',
-      bookingUrl: 'https://scheduler.zoom.us/brian-deross/medicare-review',
-      phone: '908-216-5895',
+      advisorName: 'Your Advisor Name',
+      bookingUrl: 'https://calendly.com',
+      phone: '732-308-9500',
       website: 'www.medi-solutions.org',
-      email: 'brdeross@fjins.net'
+      email: 'your@email.com'
     };
 
     function applySiteConfig() {
