@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Retirement Paycheck Planner</title>
+  <title>Medi-Solutions Retirement Income Planner</title>
   <style>
     :root {
       --bg: #0d0d10;
       --panel: rgba(20, 20, 26, 0.9);
-      --panel-2: rgba(255,255,255,0.05);
       --text: #f5f1e8;
       --muted: #c7bfb0;
       --gold: #d4af37;
@@ -18,6 +17,11 @@
       --red: #f08f8f;
       --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
       --radius: 24px;
+      --input-bg: rgba(255,255,255,0.06);
+      --input-text: #f5f1e8;
+      --input-border: rgba(255,255,255,0.08);
+      --select-bg: #f5f1e8;
+      --select-text: #161616;
     }
 
     * { box-sizing: border-box; }
@@ -31,6 +35,23 @@
         radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 18%),
         linear-gradient(180deg, #09090c 0%, #111116 45%, #0a0a0d 100%);
       min-height: 100vh;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    body.light-mode {
+      --panel: rgba(255,255,255,0.92);
+      --text: #1b1915;
+      --muted: #645c4f;
+      --gold-soft: #8a6a13;
+      --line: rgba(138,106,19,0.22);
+      --shadow: 0 16px 50px rgba(90, 73, 25, 0.12);
+      --input-bg: rgba(255,255,255,0.92);
+      --input-text: #1b1915;
+      --input-border: rgba(138,106,19,0.18);
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.10), transparent 25%),
+        radial-gradient(circle at top left, rgba(0,0,0,0.03), transparent 18%),
+        linear-gradient(180deg, #f8f4ea 0%, #f3efe4 45%, #eee7d8 100%);
     }
 
     .shell {
@@ -71,31 +92,30 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
     .logo-box {
-      width: 72px;
-      height: 72px;
-      border-radius: 20px;
-      border: 1px solid rgba(212,175,55,0.35);
+      width: 360px;
+      max-width: 100%;
+      min-height: 96px;
+      border-radius: 22px;
+      border: 1px solid rgba(212,175,55,0.22);
       display: grid;
       place-items: center;
-      background: linear-gradient(145deg, rgba(212,175,55,0.12), rgba(255,255,255,0.04));
-      color: var(--gold-soft);
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-align: center;
-      line-height: 1.1;
-      font-size: 12px;
-      padding: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,241,232,0.96));
+      padding: 12px 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
       overflow: hidden;
     }
 
     .logo-box img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-height: 72px;
       object-fit: contain;
+      display: block;
     }
 
     .eyebrow {
@@ -115,7 +135,7 @@
 
     .hero p {
       color: var(--muted);
-      max-width: 780px;
+      max-width: 760px;
       font-size: 17px;
       line-height: 1.65;
       margin: 12px 0 0;
@@ -139,7 +159,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.08fr 0.92fr;
       gap: 22px;
       margin-top: 22px;
     }
@@ -199,9 +219,9 @@
 
     input, select, textarea {
       width: 100%;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--input-text);
       border-radius: 16px;
       padding: 14px 14px;
       font-size: 15px;
@@ -209,12 +229,16 @@
       transition: 0.2s ease;
       -webkit-appearance: none;
       appearance: none;
-      color-scheme: dark;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #9f9687;
     }
 
     select {
-      background-color: #f5f1e8;
-      color: #161616;
+      background-color: var(--select-bg);
+      color: var(--select-text);
       cursor: pointer;
       background-image: linear-gradient(45deg, transparent 50%, #8b6b12 50%), linear-gradient(135deg, #8b6b12 50%, transparent 50%);
       background-position: calc(100% - 22px) calc(50% - 3px), calc(100% - 16px) calc(50% - 3px);
@@ -222,6 +246,7 @@
       background-repeat: no-repeat;
       padding-right: 42px;
       border: 1px solid rgba(212,175,55,0.35);
+      color-scheme: light;
     }
 
     select option,
@@ -230,13 +255,7 @@
       color: #161616;
     }
 
-    input::placeholder,
-    textarea::placeholder {
-      color: #a9a08f;
-    }
-
     input:focus, select:focus, textarea:focus {
-      color: #161616;
       border-color: rgba(212,175,55,0.5);
       box-shadow: 0 0 0 4px rgba(212,175,55,0.08);
     }
@@ -275,16 +294,6 @@
       border: 1px solid rgba(255,255,255,0.1);
     }
 
-    .lead-lock {
-      padding: 16px 18px;
-      background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));
-      border: 1px solid rgba(212,175,55,0.2);
-      border-radius: 20px;
-      color: var(--muted);
-      margin-bottom: 18px;
-      line-height: 1.6;
-    }
-
     .hidden { display: none !important; }
 
     .score-wrap {
@@ -313,6 +322,11 @@
       border-radius: 50%;
       background: linear-gradient(180deg, #101015, #16161d);
       border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    body.light-mode .score-ring::before {
+      background: linear-gradient(180deg, #fffdfa, #f7f2e7);
+      border: 1px solid rgba(138,106,19,0.12);
     }
 
     .score-content {
@@ -500,7 +514,6 @@
       justify-content: flex-end;
     }
 
-    .contact-card p { margin: 8px 0; color: var(--muted); }
     a { color: var(--gold-soft); }
 
     @media (max-width: 980px) {
@@ -508,6 +521,8 @@
       .fields { grid-template-columns: 1fr; }
       .mini-grid, .stat-grid, .report-grid { grid-template-columns: 1fr; }
       .top-cta { justify-content: flex-start; }
+      .brand { align-items: flex-start; }
+      .logo-box { width: 100%; }
     }
 
     @media print {
@@ -522,7 +537,7 @@
         box-shadow: none;
         border: 1px solid #ddd;
       }
-      .btn, .lead-lock, #plannerCard, .contact-card { display: none !important; }
+      .btn, #plannerCard { display: none !important; }
       .hidden-print { display: none !important; }
       .footer-note, .sub, .summary, .callout { color: #333 !important; }
       .badge, .mini-card, .stat, .report-item { border: 1px solid #ddd; background: #fff; }
@@ -536,14 +551,15 @@
     <section class="hero">
       <div class="brand-row">
         <div class="brand">
-          <div class="logo-box"><img src="Image20250908095235.png" alt="Medi-Solutions Insurance Agency logo"></div>
+          <div class="logo-box"><img src="medi-solutions-logo.png" alt="Medi-Solutions Insurance Agency"></div>
           <div>
-            <div class="eyebrow">Retirement Income Planner</div>
+            <div class="eyebrow">Medi-Solutions Retirement Income Planner</div>
             <h1>Retirement Paycheck Planner</h1>
-            <p>A simple, polished way to see how your income, healthcare costs, and savings may work together in retirement — and where added stability may help.</p>
+            <p>A polished way to see how your income, healthcare costs, and savings may work together in retirement — and where added stability may help.</p>
           </div>
         </div>
         <div class="top-cta hidden-print">
+          <button class="btn btn-secondary" onclick="toggleTheme()" id="themeToggleBtn">Light Mode</button>
           <button class="btn btn-secondary" onclick="scrollToPlanner()">Start Planning</button>
           <button class="btn btn-primary" onclick="scheduleReview()">Book a Review</button>
         </div>
@@ -857,7 +873,7 @@
               </div>
               <div class="report-item">
                 <div class="label">Notes</div>
-                <div class="text" id="reportNotes">Review Medicare costs, healthcare pressure, and options for more dependable income.</div>
+                <div class="text" id="reportNotes">Review healthcare costs, income pressure, and options for more dependable income.</div>
               </div>
             </div>
 
@@ -874,18 +890,17 @@
         </div>
       </section>
     </div>
-
-    <section class="card contact-card" style="margin-top:22px;">
-      <h2>Office Information</h2>
-      <p>Use the settings section in the code to update the advisor name, booking link, phone number, email, and website. That lets you reuse the same page for different agents without rewriting the full file.</p>
-      <p><strong style="color:var(--text)">Phone:</strong> <span id="officePhoneDisplay">732-308-9500</span></p>
-      <p><strong style="color:var(--text)">Website:</strong> <span id="officeWebsiteDisplay">www.medi-solutions.org</span></p>
-      <p><strong style="color:var(--text)">Email:</strong> <span id="officeEmailDisplay">your@email.com</span></p>
-      <p><strong style="color:var(--text)">Advisor:</strong> <span id="advisorNameDisplay">Your Advisor Name</span></p>
-    </section>
   </div>
 
   <script>
+    const SITE_CONFIG = {
+      advisorName: 'Your Advisor Name',
+      bookingUrl: 'https://calendly.com',
+      phone: '732-308-9500',
+      website: 'www.medi-solutions.org',
+      email: 'your@email.com'
+    };
+
     function currency(n) {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n || 0);
     }
@@ -903,10 +918,7 @@
       const supplementPlan = 230;
       const partD = 45;
       const advantage = 30;
-      if (planType === 'supplement') {
-        return partBBase + supplementPlan + partD;
-      }
-      return partBBase + advantage;
+      return planType === 'supplement' ? partBBase + supplementPlan + partD : partBBase + advantage;
     }
 
     function getIrmaaDetails(status, magi) {
@@ -921,11 +933,7 @@
         if (magi > bands[i]) tier = i + 1;
       }
 
-      return {
-        tier,
-        partBExtra: partBAdd[tier],
-        partDExtra: partDAdd[tier]
-      };
+      return { tier, partBExtra: partBAdd[tier], partDExtra: partDAdd[tier] };
     }
 
     let currentData = null;
@@ -1025,7 +1033,7 @@
       if (score >= 85) status = 'strong';
       else if (score < 65) status = 'under pressure';
 
-      let durabilityText = yearsCovered > 98
+      const durabilityText = yearsCovered > 98
         ? 'Your current dependable income appears to cover your essential monthly needs.'
         : `At the current gap, investable assets may cover roughly ${yearsCovered.toFixed(1)} years compared with a ${yearsToPlan}-year planning horizon.`;
 
@@ -1038,10 +1046,8 @@
     }
 
     function syncSimulationInputs() {
-      const percentInput = getVal('annuityPercentInput');
-      const payoutInput = getVal('payoutRateInput');
-      document.getElementById('annuitySlider').value = Math.min(Math.max(percentInput, 0), 70);
-      document.getElementById('payoutSlider').value = Math.min(Math.max(payoutInput, 0.3), 1.2);
+      document.getElementById('annuitySlider').value = Math.min(Math.max(getVal('annuityPercentInput'), 0), 70);
+      document.getElementById('payoutSlider').value = Math.min(Math.max(getVal('payoutRateInput'), 0.3), 1.2);
     }
 
     function updateAnnuitySimulation() {
@@ -1069,7 +1075,6 @@
 
       const gapReduction = currentData.incomeGap - revisedGap;
       const scoreIncrease = revisedScore - currentData.score;
-
       let narrative = `One example of a strategy that reallocates <strong style="color:var(--text)">${allocPct}% of savings</strong> may produce approximately <strong style="color:var(--text)">${currency(monthlyIncome)}</strong> in additional dependable monthly income using an example payout rate of <strong style="color:var(--text)">${payoutPct.toFixed(1)}%</strong>. `;
 
       if (gapReduction > 0) {
@@ -1083,7 +1088,6 @@
       }
 
       document.getElementById('strategyNarrative').innerHTML = narrative;
-
       document.getElementById('reportStrategy').textContent = revisedGap === 0
         ? 'A strategy that adds dependable income may fully cover the current monthly need and reduce reliance on market withdrawals.'
         : `A strategy that adds dependable income may reduce the gap from ${currency(currentData.incomeGap)} to ${currency(revisedGap)} while still keeping some assets available for liquidity or growth.`;
@@ -1102,8 +1106,7 @@
       const revisedGap = Math.max(currentData.monthlyNeed - (currentData.guaranteedIncome + monthlyIncome), 0);
 
       const subject = encodeURIComponent(`Retirement Paycheck Planner Results for ${currentData.clientName}`);
-      const body = encodeURIComponent(
-`${currentData.clientName},
+      const body = encodeURIComponent(`${currentData.clientName},
 
 Here is your Retirement Paycheck Planner summary.
 
@@ -1121,34 +1124,19 @@ Estimated Monthly Dependable Income: ${currency(monthlyIncome)}
 Revised Monthly Income Gap: ${currency(revisedGap)}
 
 This is an educational planning summary, not a quote or guarantee. Please reach out to review your results together.
-`
-      );
+`);
 
       window.location.href = `mailto:${currentData.clientEmail}?subject=${subject}&body=${body}`;
     }
 
-    const SITE_CONFIG = {
-      advisorName: 'Your Advisor Name',
-      bookingUrl: 'https://calendly.com',
-      phone: '732-308-9500',
-      website: 'www.medi-solutions.org',
-      email: 'your@email.com'
-    };
-
-    function applySiteConfig() {
-      const phoneDisplay = document.getElementById('officePhoneDisplay');
-      const websiteDisplay = document.getElementById('officeWebsiteDisplay');
-      const emailDisplay = document.getElementById('officeEmailDisplay');
-      const advisorDisplay = document.getElementById('advisorNameDisplay');
-
-      if (phoneDisplay) phoneDisplay.textContent = SITE_CONFIG.phone;
-      if (websiteDisplay) websiteDisplay.textContent = SITE_CONFIG.website;
-      if (emailDisplay) emailDisplay.textContent = SITE_CONFIG.email;
-      if (advisorDisplay) advisorDisplay.textContent = SITE_CONFIG.advisorName;
-    }
-
     function scheduleReview() {
       window.location.href = SITE_CONFIG.bookingUrl;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) btn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
     }
 
     function clearPlanner() {
@@ -1168,7 +1156,11 @@ This is an educational planning summary, not a quote or guarantee. Please reach 
       document.getElementById('plannerCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    applySiteConfig();
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      document.body.classList.add('light-mode');
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) btn.textContent = 'Dark Mode';
+    }
   </script>
 </body>
 </html>
