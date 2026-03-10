@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Retirement Paycheck Test</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f5f7fb;
+margin:0;
+padding:0;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:30px;
+margin-top:30px;
+border-radius:8px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+h1{
+text-align:center;
+color:#1f3c73;
+}
+
+h2{
+margin-top:30px;
+color:#1f3c73;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+background:#1f3c73;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#152a52;
+}
+
+.resultBox{
+background:#eef3ff;
+padding:20px;
+border-radius:6px;
+margin-top:20px;
+}
+
+.score{
+font-size:32px;
+font-weight:bold;
+color:#1f3c73;
+}
+
+.table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+.table td{
+border-bottom:1px solid #ddd;
+padding:8px;
+}
+
+.cta{
+text-align:center;
+margin-top:30px;
+}
+
+.cta button{
+background:#2c9c59;
+font-size:18px;
+padding:14px 30px;
+}
+
+.small{
+font-size:14px;
+color:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Retirement Paycheck Test</h1>
+
+<p style="text-align:center;">
+Will your retirement income last to age 90?
+</p>
+
+<h2>Basic Information</h2>
+
+<label>Age</label>
+<input id="age" type="number">
+
+<label>Total Retirement Savings ($)</label>
+<input id="savings" type="number">
+
+<label>Monthly Social Security ($)</label>
+<input id="ss" type="number">
+
+<label>Monthly Pension Income ($)</label>
+<input id="pension" type="number">
+
+<label>Monthly Living Expenses ($)</label>
+<input id="expenses" type="number">
+
+<button onclick="calculate()">Calculate My Retirement Score</button>
+
+<div id="results" class="resultBox" style="display:none">
+
+<h2>Your Retirement Paycheck Score</h2>
+
+<div class="score" id="score"></div>
+
+<p id="summary"></p>
+
+<h2>Income Breakdown</h2>
+
+<table class="table">
+<tr>
+<td>Guaranteed Monthly Income</td>
+<td id="guaranteed"></td>
+</tr>
+
+<tr>
+<td>Monthly Expenses</td>
+<td id="need"></td>
+</tr>
+
+<tr>
+<td>Income Gap</td>
+<td id="gap"></td>
+</tr>
+</table>
+
+<h2>How Long Savings Could Last</h2>
+
+<p id="longevity"></p>
+
+<h2>Income Stability Test</h2>
+
+<table class="table">
+<tr>
+<td>Scenario</td>
+<td>Impact</td>
+</tr>
+
+<tr>
+<td>Market Portfolio Only</td>
+<td>Income may drop if markets fall</td>
+</tr>
+
+<tr>
+<td>With Guaranteed Income Strategy</td>
+<td>Income remains stable regardless of markets</td>
+</tr>
+</table>
+
+<h2>Example Income Strategy</h2>
+
+<p id="annuityExample"></p>
+
+<div class="cta">
+
+<p><strong>Want to see your full retirement income plan?</strong></p>
+
+<button onclick="schedule()">Schedule Income Review</button>
+
+<p class="small">20-minute retirement income review</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function calculate(){
+
+let savings = parseFloat(document.getElementById("savings").value) || 0
+let ss = parseFloat(document.getElementById("ss").value) || 0
+let pension = parseFloat(document.getElementById("pension").value) || 0
+let expenses = parseFloat(document.getElementById("expenses").value) || 0
+
+let guaranteed = ss + pension
+let gap = expenses - guaranteed
+
+if(gap < 0){ gap = 0 }
+
+let coverage = guaranteed / expenses
+let score = Math.round(coverage * 100)
+
+if(score > 100){ score = 100 }
+
+let annualGap = gap * 12
+let years = savings / annualGap
+
+document.getElementById("results").style.display="block"
+
+document.getElementById("score").innerHTML = score + " / 100"
+
+document.getElementById("guaranteed").innerHTML = "$" + guaranteed.toLocaleString()
+
+document.getElementById("need").innerHTML = "$" + expenses.toLocaleString()
+
+document.getElementById("gap").innerHTML = "$" + gap.toLocaleString()
+
+if(gap > 0){
+
+document.getElementById("summary").innerHTML =
+"Your guaranteed income currently covers about " + score + "% of your lifestyle."
+
+document.getElementById("longevity").innerHTML =
+"Based on the income gap, your savings could last approximately <strong>" + years.toFixed(1) + " years</strong>."
+
+}else{
+
+document.getElementById("summary").innerHTML =
+"Your guaranteed income currently covers your living expenses."
+
+document.getElementById("longevity").innerHTML =
+"Your essential income needs appear covered by guaranteed income sources."
+
+}
+
+let annuity = savings * .3
+let monthlyIncome = annuity * .006
+
+document.getElementById("annuityExample").innerHTML =
+"If $" + annuity.toLocaleString() +
+" were allocated to a lifetime income annuity, it could produce approximately <strong>$" +
+monthlyIncome.toFixed(0) +
+" per month of guaranteed income for life.</strong>"
+
+}
+
+function schedule(){
+
+window.location.href="https://calendly.com"
+
+}
+
+</script>
+
+</body>
+</html>
