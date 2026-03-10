@@ -213,14 +213,19 @@
     }
 
     select {
-      background-color: rgba(255,255,255,0.08);
-      color: var(--text);
+      background-color: #1b1b23;
+      color: #f5f1e8;
       cursor: pointer;
+      background-image: linear-gradient(45deg, transparent 50%, #f0d98b 50%), linear-gradient(135deg, #f0d98b 50%, transparent 50%);
+      background-position: calc(100% - 22px) calc(50% - 3px), calc(100% - 16px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 42px;
     }
 
     select option,
     select optgroup {
-      background: #18181f;
+      background: #1b1b23;
       color: #f5f1e8;
     }
 
@@ -529,7 +534,7 @@
     <section class="hero">
       <div class="brand-row">
         <div class="brand">
-          <div class="logo-box">YOUR<br>LOGO</div>
+          <div class="logo-box"><img src="Image20250908095235.png" alt="Medi-Solutions Insurance Agency logo"></div>
           <div>
             <div class="eyebrow">Retirement Income Planner</div>
             <h1>Retirement Paycheck Planner</h1>
@@ -554,12 +559,7 @@
     <div class="grid">
       <section class="card" id="plannerCard">
         <h2>Your Information</h2>
-        <p class="sub">This planner is designed to help you understand how your retirement income, healthcare costs, and lifestyle needs may fit together over time.</p>
-
-        <div class="lead-lock">
-          <strong style="color: var(--text); display:block; margin-bottom:8px;">Start With a Personalized Snapshot</strong>
-          Enter a few details below to view a personalized retirement income summary, healthcare cost estimate, and income stability outlook.
-        </div>
+        <p class="sub">Use this planner to get a clearer picture of how your income, healthcare costs, and savings may work together in retirement.</p>
 
         <div class="section-title">Contact Details</div>
         <div class="fields">
@@ -699,7 +699,7 @@
 
       <section class="card" id="resultsCard">
         <h2>Your Results</h2>
-        <p class="sub">These results are designed to help you better understand how your income, lifestyle, and healthcare costs may work together in retirement.</p>
+        <p class="sub">These results are meant to give you a simple snapshot of your current retirement income picture.</p>
 
         <div id="emptyState">
           <div class="summary">
@@ -874,11 +874,12 @@
     </div>
 
     <section class="card contact-card" style="margin-top:22px;">
-      <h2>Customize This for Your Brand</h2>
-      <p>Replace the <strong style="color:var(--text)">YOUR LOGO</strong> block with your logo image, update the Calendly link in the script, and add your phone, website, and email below.</p>
-      <p><strong style="color:var(--text)">Phone:</strong> 732-308-9500</p>
-      <p><strong style="color:var(--text)">Website:</strong> www.medi-solutions.org</p>
-      <p><strong style="color:var(--text)">Email:</strong> your@email.com</p>
+      <h2>Office Information</h2>
+      <p>Use the settings section in the code to update the advisor name, booking link, phone number, email, and website. That lets you reuse the same page for different agents without rewriting the full file.</p>
+      <p><strong style="color:var(--text)">Phone:</strong> <span id="officePhoneDisplay">732-308-9500</span></p>
+      <p><strong style="color:var(--text)">Website:</strong> <span id="officeWebsiteDisplay">www.medi-solutions.org</span></p>
+      <p><strong style="color:var(--text)">Email:</strong> <span id="officeEmailDisplay">your@email.com</span></p>
+      <p><strong style="color:var(--text)">Advisor:</strong> <span id="advisorNameDisplay">Your Advisor Name</span></p>
     </section>
   </div>
 
@@ -1124,8 +1125,28 @@ This is an educational planning summary, not a quote or guarantee. Please reach 
       window.location.href = `mailto:${currentData.clientEmail}?subject=${subject}&body=${body}`;
     }
 
+    const SITE_CONFIG = {
+      advisorName: 'Your Advisor Name',
+      bookingUrl: 'https://calendly.com',
+      phone: '732-308-9500',
+      website: 'www.medi-solutions.org',
+      email: 'your@email.com'
+    };
+
+    function applySiteConfig() {
+      const phoneDisplay = document.getElementById('officePhoneDisplay');
+      const websiteDisplay = document.getElementById('officeWebsiteDisplay');
+      const emailDisplay = document.getElementById('officeEmailDisplay');
+      const advisorDisplay = document.getElementById('advisorNameDisplay');
+
+      if (phoneDisplay) phoneDisplay.textContent = SITE_CONFIG.phone;
+      if (websiteDisplay) websiteDisplay.textContent = SITE_CONFIG.website;
+      if (emailDisplay) emailDisplay.textContent = SITE_CONFIG.email;
+      if (advisorDisplay) advisorDisplay.textContent = SITE_CONFIG.advisorName;
+    }
+
     function scheduleReview() {
-      window.location.href = 'https://calendly.com';
+      window.location.href = SITE_CONFIG.bookingUrl;
     }
 
     function clearPlanner() {
@@ -1144,6 +1165,8 @@ This is an educational planning summary, not a quote or guarantee. Please reach 
     function scrollToPlanner() {
       document.getElementById('plannerCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    applySiteConfig();
   </script>
 </body>
 </html>
