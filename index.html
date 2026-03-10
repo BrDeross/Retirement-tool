@@ -1,271 +1,1123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Retirement Paycheck Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retirement Paycheck Planner</title>
+  <style>
+    :root {
+      --bg: #0d0d10;
+      --panel: rgba(20, 20, 26, 0.88);
+      --panel-2: rgba(255,255,255,0.05);
+      --text: #f5f1e8;
+      --muted: #c7bfb0;
+      --gold: #d4af37;
+      --gold-soft: #f0d98b;
+      --line: rgba(212, 175, 55, 0.28);
+      --green: #7ecb93;
+      --red: #f08f8f;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      --radius: 24px;
+    }
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    * { box-sizing: border-box; }
 
-<style>
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.13), transparent 25%),
+        radial-gradient(circle at top left, rgba(255,255,255,0.06), transparent 18%),
+        linear-gradient(180deg, #09090c 0%, #111116 45%, #0a0a0d 100%);
+      min-height: 100vh;
+    }
 
-body{
-font-family: Arial, sans-serif;
-background:#f5f7fb;
-margin:0;
-padding:0;
-}
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 18px 48px;
+    }
 
-.container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:30px;
-margin-top:30px;
-border-radius:8px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
+    .hero {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border-radius: 32px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
 
-h1{
-text-align:center;
-color:#1f3c73;
-}
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -60px auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(212,175,55,0.16), transparent 65%);
+      pointer-events: none;
+    }
 
-h2{
-margin-top:30px;
-color:#1f3c73;
-}
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
 
-input{
-width:100%;
-padding:10px;
-margin-top:5px;
-margin-bottom:15px;
-border-radius:5px;
-border:1px solid #ccc;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-button{
-background:#1f3c73;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:6px;
-cursor:pointer;
-font-size:16px;
-}
+    .logo-box {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      border: 1px solid rgba(212,175,55,0.35);
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, rgba(212,175,55,0.12), rgba(255,255,255,0.04));
+      color: var(--gold-soft);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-align: center;
+      line-height: 1.1;
+      font-size: 12px;
+      padding: 8px;
+    }
 
-button:hover{
-background:#152a52;
-}
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-soft);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
 
-.resultBox{
-background:#eef3ff;
-padding:20px;
-border-radius:6px;
-margin-top:20px;
-}
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
 
-.score{
-font-size:32px;
-font-weight:bold;
-color:#1f3c73;
-}
+    .hero p {
+      color: var(--muted);
+      max-width: 780px;
+      font-size: 17px;
+      line-height: 1.65;
+      margin: 12px 0 0;
+    }
 
-.table{
-width:100%;
-margin-top:20px;
-border-collapse:collapse;
-}
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
 
-.table td{
-border-bottom:1px solid #ddd;
-padding:8px;
-}
+    .badge {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 13px;
+    }
 
-.cta{
-text-align:center;
-margin-top:30px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
 
-.cta button{
-background:#2c9c59;
-font-size:18px;
-padding:14px 30px;
-}
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
 
-.small{
-font-size:14px;
-color:#666;
-}
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
 
-</style>
+    .card .sub {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section-title {
+      font-size: 14px;
+      color: var(--gold-soft);
+      margin: 24px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .fields-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--gold-soft);
+      letter-spacing: 0.03em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 14px;
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 0 0 4px rgba(212,175,55,0.08);
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 15px;
+      transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, #f0d98b 100%);
+      color: #161616;
+      box-shadow: 0 12px 30px rgba(212,175,55,0.22);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .lead-lock {
+      padding: 16px 18px;
+      background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 20px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .hidden { display: none !important; }
+
+    .score-wrap {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .score-ring {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--gold) 0deg, var(--gold) 0deg, rgba(255,255,255,0.08) 0deg 360deg);
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .score-ring::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #101015, #16161d);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .score-content {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .score-number {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 6px;
+    }
+
+    .summary {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 16px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      border-radius: 20px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat .kicker {
+      font-size: 12px;
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .stat .note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 22px;
+      margin-top: 8px;
+    }
+
+    .range-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      background: transparent;
+      border: 0;
+      accent-color: var(--gold);
+    }
+
+    .callout {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(212,175,55,0.2);
+      background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      margin-top: 14px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      text-align: left;
+      padding: 14px 14px;
+      font-size: 14px;
+    }
+
+    .compare-table th {
+      color: var(--gold-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+    }
+
+    .compare-table tbody tr {
+      background: rgba(255,255,255,0.03);
+      border-radius: 18px;
+    }
+
+    .compare-table tbody tr td:first-child { border-radius: 16px 0 0 16px; }
+    .compare-table tbody tr td:last-child { border-radius: 0 16px 16px 0; }
+
+    .good { color: var(--green); font-weight: 700; }
+    .warn { color: var(--red); font-weight: 700; }
+
+    .footer-note {
+      margin-top: 18px;
+      color: #b6af9f;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .report {
+      margin-top: 26px;
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(212,175,55,0.14);
+    }
+
+    .report h3 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .report-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .report-item .label { color: var(--gold-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; }
+    .report-item .text { margin-top: 8px; line-height: 1.6; color: var(--text); }
+
+    .top-cta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .contact-card p { margin: 8px 0; color: var(--muted); }
+    a { color: var(--gold-soft); }
+
+    @media (max-width: 980px) {
+      .grid, .score-wrap, .fields-3 { grid-template-columns: 1fr; }
+      .fields { grid-template-columns: 1fr; }
+      .mini-grid, .stat-grid, .report-grid { grid-template-columns: 1fr; }
+      .top-cta { justify-content: flex-start; }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #111;
+      }
+      .shell { max-width: 100%; padding: 0; }
+      .hero, .card, .report {
+        background: #fff;
+        color: #111;
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      .btn, .lead-lock, #plannerCard { display: none !important; }
+      .hidden-print { display: none !important; }
+      .footer-note, .sub, .summary, .callout { color: #333 !important; }
+      .badge, .mini-card, .stat, .report-item { border: 1px solid #ddd; background: #fff; }
+      .score-ring::before { background: #fff; }
+      label, .kicker, .label, .score-label, .eyebrow, .badge, .footer-note { color: #333 !important; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="shell">
+    <section class="hero">
+      <div class="brand-row">
+        <div class="brand">
+          <div class="logo-box">YOUR<br>LOGO</div>
+          <div>
+            <div class="eyebrow">Luxury Retirement Income Planner</div>
+            <h1>Retirement Paycheck Planner</h1>
+            <p>A polished client experience designed to reveal income gaps, estimate healthcare pressure, stress-test retirement against market drops, and model how guaranteed income strategies may improve stability.</p>
+          </div>
+        </div>
+        <div class="top-cta hidden-print">
+          <button class="btn btn-secondary" onclick="scrollToPlanner()">Start Planning</button>
+          <button class="btn btn-primary" onclick="scheduleReview()">Book Income Review</button>
+        </div>
+      </div>
+      <div class="hero-badges">
+        <div class="badge">Retirement Paycheck Score</div>
+        <div class="badge">Income Gap Analysis</div>
+        <div class="badge">Medicare + IRMAA Estimates</div>
+        <div class="badge">Market Crash Stress Test</div>
+        <div class="badge">Annuity Income Simulation</div>
+        <div class="badge">Printable Client Report</div>
+      </div>
+    </section>
 
-<div class="container">
+    <div class="grid">
+      <section class="card" id="plannerCard">
+        <h2>Your Information</h2>
+        <p class="sub">This tool is designed to start the conversation. It does not replace personalized insurance, tax, legal, or investment advice. To reveal results, the client completes a short contact section first.</p>
 
-<h1>Retirement Paycheck Test</h1>
+        <div class="lead-lock">
+          <strong style="color: var(--text); display:block; margin-bottom:8px;">Lead Capture Before Results</strong>
+          This setup is intentional. Most calculators educate and then lose the lead. This one captures the opportunity first, then shows the analysis.
+        </div>
 
-<p style="text-align:center;">
-Will your retirement income last to age 90?
-</p>
+        <div class="section-title">Contact Details</div>
+        <div class="fields">
+          <div class="field">
+            <label for="clientName">Full Name</label>
+            <input id="clientName" type="text" placeholder="Client name">
+          </div>
+          <div class="field">
+            <label for="clientEmail">Email Address</label>
+            <input id="clientEmail" type="email" placeholder="name@email.com">
+          </div>
+          <div class="field">
+            <label for="clientPhone">Phone Number</label>
+            <input id="clientPhone" type="tel" placeholder="(555) 555-5555">
+          </div>
+          <div class="field">
+            <label for="meetingGoal">Primary Goal</label>
+            <select id="meetingGoal">
+              <option value="Retirement income planning">Retirement income planning</option>
+              <option value="Medicare + income planning">Medicare + income planning</option>
+              <option value="Protect assets from market risk">Protect assets from market risk</option>
+              <option value="Estimate how long money may last">Estimate how long money may last</option>
+            </select>
+          </div>
+        </div>
 
-<h2>Basic Information</h2>
+        <div class="section-title">Retirement Snapshot</div>
+        <div class="fields-3">
+          <div class="field">
+            <label for="age">Current Age</label>
+            <input id="age" type="number" min="50" max="100" value="67">
+          </div>
+          <div class="field">
+            <label for="retireAge">Retirement Age</label>
+            <input id="retireAge" type="number" min="50" max="100" value="67">
+          </div>
+          <div class="field">
+            <label for="lifeExpectancy">Planning To Age</label>
+            <input id="lifeExpectancy" type="number" min="75" max="105" value="90">
+          </div>
+        </div>
 
-<label>Age</label>
-<input id="age" type="number">
+        <div class="fields">
+          <div class="field">
+            <label for="savings">Total Retirement Savings ($)</label>
+            <input id="savings" type="number" min="0" value="450000">
+          </div>
+          <div class="field">
+            <label for="cashReserves">Cash Reserves ($)</label>
+            <input id="cashReserves" type="number" min="0" value="50000">
+          </div>
+          <div class="field">
+            <label for="ss">Monthly Social Security ($)</label>
+            <input id="ss" type="number" min="0" value="3100">
+          </div>
+          <div class="field">
+            <label for="pension">Monthly Pension / Other Guaranteed Income ($)</label>
+            <input id="pension" type="number" min="0" value="0">
+          </div>
+        </div>
 
-<label>Total Retirement Savings ($)</label>
-<input id="savings" type="number">
+        <div class="section-title">Monthly Lifestyle + Healthcare</div>
+        <div class="fields-3">
+          <div class="field">
+            <label for="housing">Housing / Utilities ($)</label>
+            <input id="housing" type="number" min="0" value="2000">
+          </div>
+          <div class="field">
+            <label for="food">Food / Daily Living ($)</label>
+            <input id="food" type="number" min="0" value="900">
+          </div>
+          <div class="field">
+            <label for="travel">Travel / Leisure ($)</label>
+            <input id="travel" type="number" min="0" value="600">
+          </div>
+          <div class="field">
+            <label for="family">Family / Gifts / Support ($)</label>
+            <input id="family" type="number" min="0" value="300">
+          </div>
+          <div class="field">
+            <label for="misc">Other Monthly Expenses ($)</label>
+            <input id="misc" type="number" min="0" value="700">
+          </div>
+          <div class="field">
+            <label for="drugCosts">Estimated Drug / Out of Pocket Medical ($)</label>
+            <input id="drugCosts" type="number" min="0" value="200">
+          </div>
+        </div>
 
-<label>Monthly Social Security ($)</label>
-<input id="ss" type="number">
+        <div class="section-title">Medicare + IRMAA Planning</div>
+        <div class="fields-3">
+          <div class="field">
+            <label for="filingStatus">Tax Filing Status</label>
+            <select id="filingStatus">
+              <option value="single">Single</option>
+              <option value="married">Married Filing Jointly</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="magi">Estimated MAGI ($)</label>
+            <input id="magi" type="number" min="0" value="125000">
+          </div>
+          <div class="field">
+            <label for="medicarePlan">Coverage Style</label>
+            <select id="medicarePlan">
+              <option value="advantage">Medicare Advantage</option>
+              <option value="supplement">Medicare Supplement + Part D</option>
+            </select>
+          </div>
+        </div>
 
-<label>Monthly Pension Income ($)</label>
-<input id="pension" type="number">
+        <div class="section-title">Income Stability Preferences</div>
+        <div class="fields-3">
+          <div class="field">
+            <label for="riskTolerance">Risk Tolerance</label>
+            <select id="riskTolerance">
+              <option value="Conservative">Conservative</option>
+              <option value="Moderate" selected>Moderate</option>
+              <option value="Growth">Growth</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="annuityPercentInput">Suggested Income Allocation (%)</label>
+            <input id="annuityPercentInput" type="number" min="0" max="100" value="30">
+          </div>
+          <div class="field">
+            <label for="payoutRateInput">Illustrative Monthly Payout Rate (%)</label>
+            <input id="payoutRateInput" type="number" min="0.1" step="0.1" value="0.6">
+          </div>
+        </div>
 
-<label>Monthly Living Expenses ($)</label>
-<input id="expenses" type="number">
+        <div class="actions hidden-print">
+          <button class="btn btn-primary" onclick="calculatePlanner()">Unlock Results</button>
+          <button class="btn btn-secondary" onclick="clearPlanner()">Reset</button>
+        </div>
+      </section>
 
-<button onclick="calculate()">Calculate My Retirement Score</button>
+      <section class="card" id="resultsCard">
+        <h2>Analysis Dashboard</h2>
+        <p class="sub">The polished summary below is built to create a decision moment, not just display numbers.</p>
 
-<div id="results" class="resultBox" style="display:none">
+        <div id="emptyState">
+          <div class="summary">
+            Complete the planner and click <strong style="color:var(--text)">Unlock Results</strong>. The dashboard will reveal the Retirement Paycheck Score, Medicare pressure, longevity projection, stress test results, and a sample guaranteed income strategy.
+          </div>
+        </div>
 
-<h2>Your Retirement Paycheck Score</h2>
+        <div id="results" class="hidden">
+          <div class="score-wrap">
+            <div class="score-ring" id="scoreRing">
+              <div class="score-content">
+                <div class="score-number" id="scoreNumber">0</div>
+                <div class="score-label">Score / 100</div>
+              </div>
+            </div>
+            <div>
+              <div class="summary" id="headlineSummary"></div>
+              <div class="mini-grid">
+                <div class="mini-card">
+                  Coverage Ratio
+                  <strong id="coverageRatio">0%</strong>
+                </div>
+                <div class="mini-card">
+                  Years Covered
+                  <strong id="yearsCovered">0.0</strong>
+                </div>
+                <div class="mini-card">
+                  IRMAA Tier
+                  <strong id="irmaaTier">Tier 0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<div class="score" id="score"></div>
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="kicker">Guaranteed Monthly Income</div>
+              <div class="value" id="guaranteedIncomeVal">$0</div>
+              <div class="note">Social Security, pension, and other recurring guaranteed income.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Monthly Lifestyle Need</div>
+              <div class="value" id="monthlyNeedVal">$0</div>
+              <div class="note">Includes daily living, estimated healthcare, and Medicare pressure.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Monthly Income Gap</div>
+              <div class="value" id="incomeGapVal">$0</div>
+              <div class="note">The gap your savings or portfolio may have to fund.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Estimated Healthcare Burden</div>
+              <div class="value" id="healthcareVal">$0</div>
+              <div class="note">Illustrative Part B, IRMAA, and plan cost estimate.</div>
+            </div>
+          </div>
 
-<p id="summary"></p>
+          <div class="section-title">Annuity Income Simulator</div>
+          <div class="range-wrap">
+            <input id="annuitySlider" type="range" min="0" max="70" step="1" value="30" oninput="updateAnnuitySimulation()">
+            <div class="mini-card" style="min-width: 180px; text-align:center;">
+              Allocation
+              <strong id="allocDisplay">30%</strong>
+            </div>
+          </div>
+          <div class="range-wrap">
+            <input id="payoutSlider" type="range" min="0.3" max="1.2" step="0.1" value="0.6" oninput="updateAnnuitySimulation()">
+            <div class="mini-card" style="min-width: 180px; text-align:center;">
+              Monthly Payout Rate
+              <strong id="payoutDisplay">0.6%</strong>
+            </div>
+          </div>
 
-<h2>Income Breakdown</h2>
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="kicker">Illustrative Amount Repositioned</div>
+              <div class="value" id="annuityAmountVal">$0</div>
+              <div class="note">A sample portion of retirement savings allocated for guaranteed income.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Estimated Monthly Guaranteed Income</div>
+              <div class="value" id="annuityIncomeVal">$0</div>
+              <div class="note">Illustrative only. Actual rates vary by age, product, rider, and carrier.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Revised Income Gap</div>
+              <div class="value" id="revisedGapVal">$0</div>
+              <div class="note">How the gap changes if part of the portfolio becomes protected income.</div>
+            </div>
+            <div class="stat">
+              <div class="kicker">Revised Retirement Score</div>
+              <div class="value" id="revisedScoreVal">0 / 100</div>
+              <div class="note">This is where the client sees the difference between market-only and hybrid income planning.</div>
+            </div>
+          </div>
 
-<table class="table">
-<tr>
-<td>Guaranteed Monthly Income</td>
-<td id="guaranteed"></td>
-</tr>
+          <div class="section-title">Market Crash Stress Test</div>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Portfolio Value</th>
+                <th>Income Pressure</th>
+                <th>Stability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Current Plan</td>
+                <td id="currentPortfolioCell">$0</td>
+                <td id="currentPressureCell">$0/month</td>
+                <td class="warn">Exposed</td>
+              </tr>
+              <tr>
+                <td>30% Market Drop</td>
+                <td id="crashPortfolioCell">$0</td>
+                <td id="crashPressureCell">$0/month</td>
+                <td class="warn">Higher pressure</td>
+              </tr>
+              <tr>
+                <td>Hybrid Income Strategy</td>
+                <td id="hybridPortfolioCell">$0</td>
+                <td id="hybridPressureCell">$0/month</td>
+                <td class="good">More stable</td>
+              </tr>
+            </tbody>
+          </table>
 
-<tr>
-<td>Monthly Expenses</td>
-<td id="need"></td>
-</tr>
+          <div class="callout" id="strategyNarrative"></div>
 
-<tr>
-<td>Income Gap</td>
-<td id="gap"></td>
-</tr>
-</table>
+          <div class="report" id="clientReport">
+            <h3>Client Summary Report</h3>
+            <div class="report-grid">
+              <div class="report-item">
+                <div class="label">Client</div>
+                <div class="text" id="reportClient">—</div>
+              </div>
+              <div class="report-item">
+                <div class="label">Primary Planning Focus</div>
+                <div class="text" id="reportGoal">—</div>
+              </div>
+              <div class="report-item">
+                <div class="label">Biggest Risk</div>
+                <div class="text" id="reportRisk">—</div>
+              </div>
+              <div class="report-item">
+                <div class="label">Potential Strategy</div>
+                <div class="text" id="reportStrategy">—</div>
+              </div>
+              <div class="report-item">
+                <div class="label">Suggested Next Step</div>
+                <div class="text" id="reportNextStep">—</div>
+              </div>
+              <div class="report-item">
+                <div class="label">Client Notes</div>
+                <div class="text" id="reportNotes">Review Medicare costs, healthcare pressure, and protected income options.</div>
+              </div>
+            </div>
 
-<h2>How Long Savings Could Last</h2>
+            <div class="actions hidden-print">
+              <button class="btn btn-primary" onclick="window.print()">Download / Print Report</button>
+              <button class="btn btn-secondary" onclick="emailResults()">Email Results</button>
+              <button class="btn btn-secondary" onclick="scheduleReview()">Schedule Review</button>
+            </div>
+          </div>
 
-<p id="longevity"></p>
+          <div class="footer-note">
+            Illustrations are educational and simplified. They are not a quote, policy illustration, guarantee, tax opinion, legal recommendation, or investment advisory recommendation. Medicare cost estimates and IRMAA amounts should be reviewed against current published figures each year before use in client recommendations.
+          </div>
+        </div>
+      </section>
+    </div>
 
-<h2>Income Stability Test</h2>
+    <section class="card contact-card" style="margin-top:22px;">
+      <h2>Customize This for Your Brand</h2>
+      <p>Replace the <strong style="color:var(--text)">YOUR LOGO</strong> block with your logo image, update the Calendly link in the script, and add your phone, website, and email below.</p>
+      <p><strong style="color:var(--text)">Phone:</strong> 732-308-9500</p>
+      <p><strong style="color:var(--text)">Website:</strong> www.medi-solutions.org</p>
+      <p><strong style="color:var(--text)">Email:</strong> your@email.com</p>
+    </section>
+  </div>
 
-<table class="table">
-<tr>
-<td>Scenario</td>
-<td>Impact</td>
-</tr>
+  <script>
+    function currency(n) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n || 0);
+    }
 
-<tr>
-<td>Market Portfolio Only</td>
-<td>Income may drop if markets fall</td>
-</tr>
+    function percent(n) {
+      return `${Math.round((n || 0) * 100)}%`;
+    }
 
-<tr>
-<td>With Guaranteed Income Strategy</td>
-<td>Income remains stable regardless of markets</td>
-</tr>
-</table>
+    function getVal(id) {
+      return parseFloat(document.getElementById(id).value) || 0;
+    }
 
-<h2>Example Income Strategy</h2>
+    function getMedicareEstimate(planType) {
+      const partBBase = 185; // editable assumption
+      const supplementPlan = 230;
+      const partD = 45;
+      const advantage = 30;
+      if (planType === 'supplement') {
+        return partBBase + supplementPlan + partD;
+      }
+      return partBBase + advantage;
+    }
 
-<p id="annuityExample"></p>
+    function getIrmaaDetails(status, magi) {
+      // Illustrative 2026-style framework. Verify yearly before client use.
+      const single = [106000, 133000, 167000, 200000, 500000];
+      const married = [212000, 266000, 334000, 400000, 750000];
+      const partBAdd = [0, 74, 185, 295, 406, 443];
+      const partDAdd = [0, 13.7, 35.3, 57, 78.6, 85.8];
+      const bands = status === 'married' ? married : single;
 
-<div class="cta">
+      let tier = 0;
+      for (let i = 0; i < bands.length; i++) {
+        if (magi > bands[i]) tier = i + 1;
+      }
 
-<p><strong>Want to see your full retirement income plan?</strong></p>
+      return {
+        tier,
+        partBExtra: partBAdd[tier],
+        partDExtra: partDAdd[tier]
+      };
+    }
 
-<button onclick="schedule()">Schedule Income Review</button>
+    let currentData = null;
 
-<p class="small">20-minute retirement income review</p>
+    function calculatePlanner() {
+      const clientName = document.getElementById('clientName').value.trim();
+      const clientEmail = document.getElementById('clientEmail').value.trim();
+      const clientPhone = document.getElementById('clientPhone').value.trim();
 
-</div>
+      if (!clientName || !clientEmail || !clientPhone) {
+        alert('To unlock results, enter the client name, email, and phone number first.');
+        return;
+      }
 
-</div>
+      const age = getVal('age');
+      const retireAge = getVal('retireAge');
+      const lifeExpectancy = getVal('lifeExpectancy');
+      const savings = getVal('savings');
+      const cashReserves = getVal('cashReserves');
+      const ss = getVal('ss');
+      const pension = getVal('pension');
+      const housing = getVal('housing');
+      const food = getVal('food');
+      const travel = getVal('travel');
+      const family = getVal('family');
+      const misc = getVal('misc');
+      const drugCosts = getVal('drugCosts');
+      const magi = getVal('magi');
+      const filingStatus = document.getElementById('filingStatus').value;
+      const medicarePlan = document.getElementById('medicarePlan').value;
+      const goal = document.getElementById('meetingGoal').value;
+      const riskTolerance = document.getElementById('riskTolerance').value;
 
-</div>
+      const irmaa = getIrmaaDetails(filingStatus, magi);
+      const baseMedicare = getMedicareEstimate(medicarePlan);
+      const healthcareBurden = baseMedicare + irmaa.partBExtra + irmaa.partDExtra + drugCosts;
 
-<script>
+      const monthlyNeed = housing + food + travel + family + misc + healthcareBurden;
+      const guaranteedIncome = ss + pension;
+      const incomeGap = Math.max(monthlyNeed - guaranteedIncome, 0);
+      const coverageRatio = monthlyNeed > 0 ? guaranteedIncome / monthlyNeed : 0;
+      let score = Math.round(Math.min(coverageRatio * 100, 100));
 
-function calculate(){
+      if (riskTolerance === 'Conservative' && incomeGap > 0) score = Math.max(score - 5, 0);
+      if (riskTolerance === 'Growth' && incomeGap === 0) score = Math.min(score + 5, 100);
 
-let savings = parseFloat(document.getElementById("savings").value) || 0
-let ss = parseFloat(document.getElementById("ss").value) || 0
-let pension = parseFloat(document.getElementById("pension").value) || 0
-let expenses = parseFloat(document.getElementById("expenses").value) || 0
+      const annualGap = incomeGap * 12;
+      const investableAssets = Math.max(savings - cashReserves, 0);
+      const yearsCovered = annualGap > 0 ? investableAssets / annualGap : 99;
+      const yearsToPlan = Math.max(lifeExpectancy - age, 0);
+      const riskOfShortfall = yearsCovered < yearsToPlan && annualGap > 0;
 
-let guaranteed = ss + pension
-let gap = expenses - guaranteed
+      currentData = {
+        clientName, clientEmail, clientPhone, age, retireAge, lifeExpectancy, savings, cashReserves,
+        ss, pension, housing, food, travel, family, misc, drugCosts, magi, filingStatus,
+        medicarePlan, goal, riskTolerance, healthcareBurden, monthlyNeed, guaranteedIncome,
+        incomeGap, coverageRatio, score, yearsCovered, yearsToPlan, irmaa, investableAssets
+      };
 
-if(gap < 0){ gap = 0 }
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('results').classList.remove('hidden');
 
-let coverage = guaranteed / expenses
-let score = Math.round(coverage * 100)
+      document.getElementById('scoreNumber').textContent = score;
+      document.getElementById('coverageRatio').textContent = percent(coverageRatio);
+      document.getElementById('yearsCovered').textContent = yearsCovered > 98 ? '99+' : yearsCovered.toFixed(1);
+      document.getElementById('irmaaTier').textContent = `Tier ${irmaa.tier}`;
+      document.getElementById('guaranteedIncomeVal').textContent = currency(guaranteedIncome);
+      document.getElementById('monthlyNeedVal').textContent = currency(monthlyNeed);
+      document.getElementById('incomeGapVal').textContent = currency(incomeGap);
+      document.getElementById('healthcareVal').textContent = currency(healthcareBurden);
 
-if(score > 100){ score = 100 }
+      document.getElementById('headlineSummary').innerHTML = createHeadlineSummary(currentData);
+      setScoreRing(score);
+      syncSimulationInputs();
+      updateAnnuitySimulation();
 
-let annualGap = gap * 12
-let years = savings / annualGap
+      const currentPortfolio = investableAssets;
+      const crashPortfolio = investableAssets * 0.7;
+      document.getElementById('currentPortfolioCell').textContent = currency(currentPortfolio);
+      document.getElementById('crashPortfolioCell').textContent = currency(crashPortfolio);
+      document.getElementById('currentPressureCell').textContent = currency(incomeGap);
+      document.getElementById('crashPressureCell').textContent = currency(incomeGap);
 
-document.getElementById("results").style.display="block"
+      document.getElementById('reportClient').textContent = `${clientName} | ${clientEmail} | ${clientPhone}`;
+      document.getElementById('reportGoal').textContent = goal;
+      document.getElementById('reportRisk').textContent = riskOfShortfall
+        ? 'Income gap may require portfolio withdrawals that may not last through the full planning horizon.'
+        : 'Core lifestyle appears more secure, but healthcare costs and market pressure still need review.';
+      document.getElementById('reportNextStep').textContent = 'Review the gap, compare market-only versus hybrid income planning, and confirm current Medicare cost assumptions.';
 
-document.getElementById("score").innerHTML = score + " / 100"
+      window.scrollTo({ top: document.getElementById('resultsCard').offsetTop - 20, behavior: 'smooth' });
+    }
 
-document.getElementById("guaranteed").innerHTML = "$" + guaranteed.toLocaleString()
+    function createHeadlineSummary(data) {
+      const { clientName, score, coverageRatio, incomeGap, yearsCovered, yearsToPlan, healthcareBurden, riskTolerance } = data;
+      let status = 'moderate';
+      if (score >= 85) status = 'strong';
+      else if (score < 65) status = 'under pressure';
 
-document.getElementById("need").innerHTML = "$" + expenses.toLocaleString()
+      let durabilityText = yearsCovered > 98
+        ? 'Current guaranteed income appears to cover essential monthly needs.'
+        : `At the current gap, investable assets may cover roughly ${yearsCovered.toFixed(1)} years versus a ${yearsToPlan}-year planning horizon.`;
 
-document.getElementById("gap").innerHTML = "$" + gap.toLocaleString()
+      return `<strong style="color:var(--text)">${clientName}</strong> has a <strong style="color:var(--text)">${status}</strong> retirement paycheck profile. Guaranteed income covers <strong style="color:var(--text)">${Math.round(coverageRatio * 100)}%</strong> of current monthly need. Estimated healthcare and Medicare pressure is <strong style="color:var(--text)">${currency(healthcareBurden)}</strong> per month. ${durabilityText} Risk tolerance is listed as <strong style="color:var(--text)">${riskTolerance}</strong>.`;
+    }
 
-if(gap > 0){
+    function setScoreRing(score) {
+      const deg = Math.max(0, Math.min(score, 100)) * 3.6;
+      document.getElementById('scoreRing').style.background = `conic-gradient(var(--gold) 0deg ${deg}deg, rgba(255,255,255,0.08) ${deg}deg 360deg)`;
+    }
 
-document.getElementById("summary").innerHTML =
-"Your guaranteed income currently covers about " + score + "% of your lifestyle."
+    function syncSimulationInputs() {
+      const percentInput = getVal('annuityPercentInput');
+      const payoutInput = getVal('payoutRateInput');
+      document.getElementById('annuitySlider').value = Math.min(Math.max(percentInput, 0), 70);
+      document.getElementById('payoutSlider').value = Math.min(Math.max(payoutInput, 0.3), 1.2);
+    }
 
-document.getElementById("longevity").innerHTML =
-"Based on the income gap, your savings could last approximately <strong>" + years.toFixed(1) + " years</strong>."
+    function updateAnnuitySimulation() {
+      if (!currentData) return;
 
-}else{
+      const allocPct = parseFloat(document.getElementById('annuitySlider').value) || 0;
+      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 0.6;
+      document.getElementById('allocDisplay').textContent = `${allocPct}%`;
+      document.getElementById('payoutDisplay').textContent = `${payoutPct.toFixed(1)}%`;
 
-document.getElementById("summary").innerHTML =
-"Your guaranteed income currently covers your living expenses."
+      const annuityAmount = currentData.savings * (allocPct / 100);
+      const monthlyIncome = annuityAmount * (payoutPct / 100);
+      const revisedGuaranteed = currentData.guaranteedIncome + monthlyIncome;
+      const revisedGap = Math.max(currentData.monthlyNeed - revisedGuaranteed, 0);
+      const revisedCoverage = currentData.monthlyNeed > 0 ? revisedGuaranteed / currentData.monthlyNeed : 1;
+      const revisedScore = Math.round(Math.min(revisedCoverage * 100, 100));
+      const remainingPortfolio = Math.max(currentData.investableAssets - annuityAmount, 0);
 
-document.getElementById("longevity").innerHTML =
-"Your essential income needs appear covered by guaranteed income sources."
+      document.getElementById('annuityAmountVal').textContent = currency(annuityAmount);
+      document.getElementById('annuityIncomeVal').textContent = currency(monthlyIncome);
+      document.getElementById('revisedGapVal').textContent = currency(revisedGap);
+      document.getElementById('revisedScoreVal').textContent = `${revisedScore} / 100`;
+      document.getElementById('hybridPortfolioCell').textContent = currency(remainingPortfolio);
+      document.getElementById('hybridPressureCell').textContent = currency(revisedGap);
 
-}
+      const gapReduction = currentData.incomeGap - revisedGap;
+      const scoreIncrease = revisedScore - currentData.score;
 
-let annuity = savings * .3
-let monthlyIncome = annuity * .006
+      let narrative = `A sample hybrid income strategy reallocating <strong style="color:var(--text)">${allocPct}% of savings</strong> may produce approximately <strong style="color:var(--text)">${currency(monthlyIncome)}</strong> in additional guaranteed monthly income using an illustrative payout rate of <strong style="color:var(--text)">${payoutPct.toFixed(1)}%</strong>. `;
 
-document.getElementById("annuityExample").innerHTML =
-"If $" + annuity.toLocaleString() +
-" were allocated to a lifetime income annuity, it could produce approximately <strong>$" +
-monthlyIncome.toFixed(0) +
-" per month of guaranteed income for life.</strong>"
+      if (gapReduction > 0) {
+        narrative += `That reduces the income gap by <strong style="color:var(--text)">${currency(gapReduction)}</strong> per month and improves the retirement score by <strong style="color:var(--text)">${scoreIncrease}</strong> points.`;
+      } else {
+        narrative += `At this allocation, the current lifestyle need still exceeds guaranteed income, which means the client may still be exposed to ongoing withdrawal pressure.`;
+      }
 
-}
+      if (revisedGap === 0) {
+        narrative += ` The modeled guaranteed income fully covers the current monthly lifestyle need, which is usually the moment where the conversation changes from product resistance to relief.`;
+      }
 
-function schedule(){
+      document.getElementById('strategyNarrative').innerHTML = narrative;
 
-window.location.href="https://calendly.com"
+      document.getElementById('reportStrategy').textContent = revisedGap === 0
+        ? 'A hybrid strategy may fully cover the current monthly need with guaranteed income and reduce market dependency.'
+        : `A hybrid strategy may reduce the gap from ${currency(currentData.incomeGap)} to ${currency(revisedGap)} while retaining some liquid or growth-oriented assets.`;
+    }
 
-}
+    function emailResults() {
+      if (!currentData) {
+        alert('Run the planner first.');
+        return;
+      }
 
-</script>
+      const allocPct = parseFloat(document.getElementById('annuitySlider').value) || 0;
+      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 0.6;
+      const annuityAmount = currentData.savings * (allocPct / 100);
+      const monthlyIncome = annuityAmount * (payoutPct / 100);
+      const revisedGap = Math.max(currentData.monthlyNeed - (currentData.guaranteedIncome + monthlyIncome), 0);
 
+      const subject = encodeURIComponent(`Retirement Paycheck Planner Results for ${currentData.clientName}`);
+      const body = encodeURIComponent(
+`${currentData.clientName},
+
+Here is your Retirement Paycheck Planner summary.
+
+Retirement Score: ${currentData.score}/100
+Guaranteed Monthly Income: ${currency(currentData.guaranteedIncome)}
+Estimated Monthly Need: ${currency(currentData.monthlyNeed)}
+Monthly Income Gap: ${currency(currentData.incomeGap)}
+Estimated Healthcare + Medicare Burden: ${currency(currentData.healthcareBurden)}
+IRMAA Tier: ${currentData.irmaa.tier}
+Estimated Years Assets May Cover Gap: ${currentData.yearsCovered > 98 ? '99+' : currentData.yearsCovered.toFixed(1)}
+
+Illustrative Hybrid Strategy:
+Allocated Amount: ${currency(annuityAmount)}
+Estimated Guaranteed Monthly Income: ${currency(monthlyIncome)}
+Revised Monthly Income Gap: ${currency(revisedGap)}
+
+This is an educational planning summary, not a quote or guarantee. Reply to schedule a personalized review.
+`
+      );
+
+      window.location.href = `mailto:${currentData.clientEmail}?subject=${subject}&body=${body}`;
+    }
+
+    function scheduleReview() {
+      window.location.href = 'https://calendly.com';
+    }
+
+    function clearPlanner() {
+      document.querySelectorAll('input').forEach(input => {
+        if (input.type === 'number') return;
+        input.value = '';
+      });
+      document.getElementById('clientName').value = '';
+      document.getElementById('clientEmail').value = '';
+      document.getElementById('clientPhone').value = '';
+      currentData = null;
+      document.getElementById('results').classList.add('hidden');
+      document.getElementById('emptyState').classList.remove('hidden');
+    }
+
+    function scrollToPlanner() {
+      document.getElementById('plannerCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
 </body>
 </html>
