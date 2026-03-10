@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg: #0d0d10;
-      --panel: rgba(20, 20, 26, 0.88);
+      --panel: rgba(20, 20, 26, 0.9);
       --panel-2: rgba(255,255,255,0.05);
       --text: #f5f1e8;
       --muted: #c7bfb0;
@@ -89,6 +89,13 @@
       line-height: 1.1;
       font-size: 12px;
       padding: 8px;
+      overflow: hidden;
+    }
+
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .eyebrow {
@@ -193,13 +200,33 @@
     input, select, textarea {
       width: 100%;
       border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.06);
       color: var(--text);
       border-radius: 16px;
       padding: 14px 14px;
       font-size: 15px;
       outline: none;
       transition: 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+      color-scheme: dark;
+    }
+
+    select {
+      background-color: rgba(255,255,255,0.08);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    select option,
+    select optgroup {
+      background: #18181f;
+      color: #f5f1e8;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #a9a08f;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -488,7 +515,7 @@
         box-shadow: none;
         border: 1px solid #ddd;
       }
-      .btn, .lead-lock, #plannerCard { display: none !important; }
+      .btn, .lead-lock, #plannerCard, .contact-card { display: none !important; }
       .hidden-print { display: none !important; }
       .footer-note, .sub, .summary, .callout { color: #333 !important; }
       .badge, .mini-card, .stat, .report-item { border: 1px solid #ddd; background: #fff; }
@@ -504,41 +531,41 @@
         <div class="brand">
           <div class="logo-box">YOUR<br>LOGO</div>
           <div>
-            <div class="eyebrow">Luxury Retirement Income Planner</div>
+            <div class="eyebrow">Retirement Income Planner</div>
             <h1>Retirement Paycheck Planner</h1>
-            <p>A polished client experience designed to reveal income gaps, estimate healthcare pressure, stress-test retirement against market drops, and model how guaranteed income strategies may improve stability.</p>
+            <p>A simple, polished way to see how your income, healthcare costs, and savings may work together in retirement — and where added stability may help.</p>
           </div>
         </div>
         <div class="top-cta hidden-print">
           <button class="btn btn-secondary" onclick="scrollToPlanner()">Start Planning</button>
-          <button class="btn btn-primary" onclick="scheduleReview()">Book Income Review</button>
+          <button class="btn btn-primary" onclick="scheduleReview()">Book a Review</button>
         </div>
       </div>
       <div class="hero-badges">
         <div class="badge">Retirement Paycheck Score</div>
-        <div class="badge">Income Gap Analysis</div>
-        <div class="badge">Medicare + IRMAA Estimates</div>
-        <div class="badge">Market Crash Stress Test</div>
-        <div class="badge">Annuity Income Simulation</div>
-        <div class="badge">Printable Client Report</div>
+        <div class="badge">Income Gap Review</div>
+        <div class="badge">Medicare + IRMAA Estimate</div>
+        <div class="badge">Market Stress Test</div>
+        <div class="badge">Income Strategy Model</div>
+        <div class="badge">Printable Summary</div>
       </div>
     </section>
 
     <div class="grid">
       <section class="card" id="plannerCard">
         <h2>Your Information</h2>
-        <p class="sub">This tool is designed to start the conversation. It does not replace personalized insurance, tax, legal, or investment advice. To reveal results, the client completes a short contact section first.</p>
+        <p class="sub">This planner is designed to help you understand how your retirement income, healthcare costs, and lifestyle needs may fit together over time.</p>
 
         <div class="lead-lock">
-          <strong style="color: var(--text); display:block; margin-bottom:8px;">Lead Capture Before Results</strong>
-          This setup is intentional. Most calculators educate and then lose the lead. This one captures the opportunity first, then shows the analysis.
+          <strong style="color: var(--text); display:block; margin-bottom:8px;">Start With a Personalized Snapshot</strong>
+          Enter a few details below to view a personalized retirement income summary, healthcare cost estimate, and income stability outlook.
         </div>
 
         <div class="section-title">Contact Details</div>
         <div class="fields">
           <div class="field">
             <label for="clientName">Full Name</label>
-            <input id="clientName" type="text" placeholder="Client name">
+            <input id="clientName" type="text" placeholder="Your name">
           </div>
           <div class="field">
             <label for="clientEmail">Email Address</label>
@@ -549,12 +576,12 @@
             <input id="clientPhone" type="tel" placeholder="(555) 555-5555">
           </div>
           <div class="field">
-            <label for="meetingGoal">Primary Goal</label>
+            <label for="meetingGoal">What would you like to focus on?</label>
             <select id="meetingGoal">
               <option value="Retirement income planning">Retirement income planning</option>
-              <option value="Medicare + income planning">Medicare + income planning</option>
-              <option value="Protect assets from market risk">Protect assets from market risk</option>
-              <option value="Estimate how long money may last">Estimate how long money may last</option>
+              <option value="Medicare and retirement income">Medicare and retirement income</option>
+              <option value="Reducing market risk">Reducing market risk</option>
+              <option value="Seeing how long savings may last">Seeing how long savings may last</option>
             </select>
           </div>
         </div>
@@ -589,7 +616,7 @@
             <input id="ss" type="number" min="0" value="3100">
           </div>
           <div class="field">
-            <label for="pension">Monthly Pension / Other Guaranteed Income ($)</label>
+            <label for="pension">Monthly Pension or Other Guaranteed Income ($)</label>
             <input id="pension" type="number" min="0" value="0">
           </div>
         </div>
@@ -597,19 +624,19 @@
         <div class="section-title">Monthly Lifestyle + Healthcare</div>
         <div class="fields-3">
           <div class="field">
-            <label for="housing">Housing / Utilities ($)</label>
+            <label for="housing">Housing and Utilities ($)</label>
             <input id="housing" type="number" min="0" value="2000">
           </div>
           <div class="field">
-            <label for="food">Food / Daily Living ($)</label>
+            <label for="food">Food and Daily Living ($)</label>
             <input id="food" type="number" min="0" value="900">
           </div>
           <div class="field">
-            <label for="travel">Travel / Leisure ($)</label>
+            <label for="travel">Travel and Leisure ($)</label>
             <input id="travel" type="number" min="0" value="600">
           </div>
           <div class="field">
-            <label for="family">Family / Gifts / Support ($)</label>
+            <label for="family">Family Support and Gifts ($)</label>
             <input id="family" type="number" min="0" value="300">
           </div>
           <div class="field">
@@ -617,7 +644,7 @@
             <input id="misc" type="number" min="0" value="700">
           </div>
           <div class="field">
-            <label for="drugCosts">Estimated Drug / Out of Pocket Medical ($)</label>
+            <label for="drugCosts">Prescriptions and Other Medical Costs ($)</label>
             <input id="drugCosts" type="number" min="0" value="200">
           </div>
         </div>
@@ -636,7 +663,7 @@
             <input id="magi" type="number" min="0" value="125000">
           </div>
           <div class="field">
-            <label for="medicarePlan">Coverage Style</label>
+            <label for="medicarePlan">Current Coverage Style</label>
             <select id="medicarePlan">
               <option value="advantage">Medicare Advantage</option>
               <option value="supplement">Medicare Supplement + Part D</option>
@@ -647,7 +674,7 @@
         <div class="section-title">Income Stability Preferences</div>
         <div class="fields-3">
           <div class="field">
-            <label for="riskTolerance">Risk Tolerance</label>
+            <label for="riskTolerance">Comfort With Market Risk</label>
             <select id="riskTolerance">
               <option value="Conservative">Conservative</option>
               <option value="Moderate" selected>Moderate</option>
@@ -655,28 +682,28 @@
             </select>
           </div>
           <div class="field">
-            <label for="annuityPercentInput">Suggested Income Allocation (%)</label>
+            <label for="annuityPercentInput">Sample Income Allocation (%)</label>
             <input id="annuityPercentInput" type="number" min="0" max="100" value="30">
           </div>
           <div class="field">
-            <label for="payoutRateInput">Illustrative Monthly Payout Rate (%)</label>
+            <label for="payoutRateInput">Example Monthly Payout Rate (%)</label>
             <input id="payoutRateInput" type="number" min="0.1" step="0.1" value="0.6">
           </div>
         </div>
 
         <div class="actions hidden-print">
-          <button class="btn btn-primary" onclick="calculatePlanner()">Unlock Results</button>
+          <button class="btn btn-primary" onclick="calculatePlanner()">View My Results</button>
           <button class="btn btn-secondary" onclick="clearPlanner()">Reset</button>
         </div>
       </section>
 
       <section class="card" id="resultsCard">
-        <h2>Analysis Dashboard</h2>
-        <p class="sub">The polished summary below is built to create a decision moment, not just display numbers.</p>
+        <h2>Your Results</h2>
+        <p class="sub">These results are designed to help you better understand how your income, lifestyle, and healthcare costs may work together in retirement.</p>
 
         <div id="emptyState">
           <div class="summary">
-            Complete the planner and click <strong style="color:var(--text)">Unlock Results</strong>. The dashboard will reveal the Retirement Paycheck Score, Medicare pressure, longevity projection, stress test results, and a sample guaranteed income strategy.
+            Complete the planner and click <strong style="color:var(--text)">View My Results</strong>. You will see your Retirement Paycheck Score, estimated healthcare pressure, how long savings may last, and a sample strategy that may add more dependable income.
           </div>
         </div>
 
@@ -711,26 +738,26 @@
             <div class="stat">
               <div class="kicker">Guaranteed Monthly Income</div>
               <div class="value" id="guaranteedIncomeVal">$0</div>
-              <div class="note">Social Security, pension, and other recurring guaranteed income.</div>
+              <div class="note">Social Security, pension, and other dependable monthly income.</div>
             </div>
             <div class="stat">
               <div class="kicker">Monthly Lifestyle Need</div>
               <div class="value" id="monthlyNeedVal">$0</div>
-              <div class="note">Includes daily living, estimated healthcare, and Medicare pressure.</div>
+              <div class="note">Includes daily living, estimated healthcare, and Medicare-related costs.</div>
             </div>
             <div class="stat">
               <div class="kicker">Monthly Income Gap</div>
               <div class="value" id="incomeGapVal">$0</div>
-              <div class="note">The gap your savings or portfolio may have to fund.</div>
+              <div class="note">This is the amount savings or investments may need to support each month.</div>
             </div>
             <div class="stat">
               <div class="kicker">Estimated Healthcare Burden</div>
               <div class="value" id="healthcareVal">$0</div>
-              <div class="note">Illustrative Part B, IRMAA, and plan cost estimate.</div>
+              <div class="note">Estimated Part B, IRMAA, plan costs, and medical spending.</div>
             </div>
           </div>
 
-          <div class="section-title">Annuity Income Simulator</div>
+          <div class="section-title">Income Strategy Model</div>
           <div class="range-wrap">
             <input id="annuitySlider" type="range" min="0" max="70" step="1" value="30" oninput="updateAnnuitySimulation()">
             <div class="mini-card" style="min-width: 180px; text-align:center;">
@@ -748,28 +775,28 @@
 
           <div class="stat-grid">
             <div class="stat">
-              <div class="kicker">Illustrative Amount Repositioned</div>
+              <div class="kicker">Sample Amount Allocated</div>
               <div class="value" id="annuityAmountVal">$0</div>
-              <div class="note">A sample portion of retirement savings allocated for guaranteed income.</div>
+              <div class="note">An example of how part of retirement savings could be used to create more dependable income.</div>
             </div>
             <div class="stat">
-              <div class="kicker">Estimated Monthly Guaranteed Income</div>
+              <div class="kicker">Estimated Monthly Dependable Income</div>
               <div class="value" id="annuityIncomeVal">$0</div>
-              <div class="note">Illustrative only. Actual rates vary by age, product, rider, and carrier.</div>
+              <div class="note">Example only. Actual income amounts vary based on age, product design, and available options.</div>
             </div>
             <div class="stat">
               <div class="kicker">Revised Income Gap</div>
               <div class="value" id="revisedGapVal">$0</div>
-              <div class="note">How the gap changes if part of the portfolio becomes protected income.</div>
+              <div class="note">This shows how the gap may change when more dependable income is added.</div>
             </div>
             <div class="stat">
               <div class="kicker">Revised Retirement Score</div>
               <div class="value" id="revisedScoreVal">0 / 100</div>
-              <div class="note">This is where the client sees the difference between market-only and hybrid income planning.</div>
+              <div class="note">This compares a market-only approach with a strategy that adds more dependable income.</div>
             </div>
           </div>
 
-          <div class="section-title">Market Crash Stress Test</div>
+          <div class="section-title">Market Stress Test</div>
           <table class="compare-table">
             <thead>
               <tr>
@@ -784,7 +811,7 @@
                 <td>Current Plan</td>
                 <td id="currentPortfolioCell">$0</td>
                 <td id="currentPressureCell">$0/month</td>
-                <td class="warn">Exposed</td>
+                <td class="warn">More exposed</td>
               </tr>
               <tr>
                 <td>30% Market Drop</td>
@@ -793,7 +820,7 @@
                 <td class="warn">Higher pressure</td>
               </tr>
               <tr>
-                <td>Hybrid Income Strategy</td>
+                <td>Added Dependable Income</td>
                 <td id="hybridPortfolioCell">$0</td>
                 <td id="hybridPressureCell">$0/month</td>
                 <td class="good">More stable</td>
@@ -804,18 +831,18 @@
           <div class="callout" id="strategyNarrative"></div>
 
           <div class="report" id="clientReport">
-            <h3>Client Summary Report</h3>
+            <h3>Your Summary Report</h3>
             <div class="report-grid">
               <div class="report-item">
-                <div class="label">Client</div>
+                <div class="label">Name</div>
                 <div class="text" id="reportClient">—</div>
               </div>
               <div class="report-item">
-                <div class="label">Primary Planning Focus</div>
+                <div class="label">Planning Focus</div>
                 <div class="text" id="reportGoal">—</div>
               </div>
               <div class="report-item">
-                <div class="label">Biggest Risk</div>
+                <div class="label">Main Area to Review</div>
                 <div class="text" id="reportRisk">—</div>
               </div>
               <div class="report-item">
@@ -827,20 +854,20 @@
                 <div class="text" id="reportNextStep">—</div>
               </div>
               <div class="report-item">
-                <div class="label">Client Notes</div>
-                <div class="text" id="reportNotes">Review Medicare costs, healthcare pressure, and protected income options.</div>
+                <div class="label">Notes</div>
+                <div class="text" id="reportNotes">Review Medicare costs, healthcare pressure, and options for more dependable income.</div>
               </div>
             </div>
 
             <div class="actions hidden-print">
               <button class="btn btn-primary" onclick="window.print()">Download / Print Report</button>
               <button class="btn btn-secondary" onclick="emailResults()">Email Results</button>
-              <button class="btn btn-secondary" onclick="scheduleReview()">Schedule Review</button>
+              <button class="btn btn-secondary" onclick="scheduleReview()">Schedule a Review</button>
             </div>
           </div>
 
           <div class="footer-note">
-            Illustrations are educational and simplified. They are not a quote, policy illustration, guarantee, tax opinion, legal recommendation, or investment advisory recommendation. Medicare cost estimates and IRMAA amounts should be reviewed against current published figures each year before use in client recommendations.
+            This planner is for educational use only. It is not a quote, guarantee, tax opinion, legal recommendation, or investment recommendation. Medicare costs and IRMAA figures should be reviewed each year before being used in a personal recommendation.
           </div>
         </div>
       </section>
@@ -869,7 +896,7 @@
     }
 
     function getMedicareEstimate(planType) {
-      const partBBase = 185; // editable assumption
+      const partBBase = 185;
       const supplementPlan = 230;
       const partD = 45;
       const advantage = 30;
@@ -880,7 +907,6 @@
     }
 
     function getIrmaaDetails(status, magi) {
-      // Illustrative 2026-style framework. Verify yearly before client use.
       const single = [106000, 133000, 167000, 200000, 500000];
       const married = [212000, 266000, 334000, 400000, 750000];
       const partBAdd = [0, 74, 185, 295, 406, 443];
@@ -907,7 +933,7 @@
       const clientPhone = document.getElementById('clientPhone').value.trim();
 
       if (!clientName || !clientEmail || !clientPhone) {
-        alert('To unlock results, enter the client name, email, and phone number first.');
+        alert('Please enter your name, email, and phone number to view your personalized results.');
         return;
       }
 
@@ -983,24 +1009,24 @@
       document.getElementById('reportClient').textContent = `${clientName} | ${clientEmail} | ${clientPhone}`;
       document.getElementById('reportGoal').textContent = goal;
       document.getElementById('reportRisk').textContent = riskOfShortfall
-        ? 'Income gap may require portfolio withdrawals that may not last through the full planning horizon.'
-        : 'Core lifestyle appears more secure, but healthcare costs and market pressure still need review.';
-      document.getElementById('reportNextStep').textContent = 'Review the gap, compare market-only versus hybrid income planning, and confirm current Medicare cost assumptions.';
+        ? 'Your current income gap may require ongoing withdrawals that may not last through your full planning horizon.'
+        : 'Your core lifestyle appears more secure, but healthcare costs and market pressure still deserve review.';
+      document.getElementById('reportNextStep').textContent = 'Review your income gap, compare a few different income approaches, and confirm current Medicare cost assumptions.';
 
       window.scrollTo({ top: document.getElementById('resultsCard').offsetTop - 20, behavior: 'smooth' });
     }
 
     function createHeadlineSummary(data) {
-      const { clientName, score, coverageRatio, incomeGap, yearsCovered, yearsToPlan, healthcareBurden, riskTolerance } = data;
+      const { clientName, score, coverageRatio, yearsCovered, yearsToPlan, healthcareBurden, riskTolerance } = data;
       let status = 'moderate';
       if (score >= 85) status = 'strong';
       else if (score < 65) status = 'under pressure';
 
       let durabilityText = yearsCovered > 98
-        ? 'Current guaranteed income appears to cover essential monthly needs.'
-        : `At the current gap, investable assets may cover roughly ${yearsCovered.toFixed(1)} years versus a ${yearsToPlan}-year planning horizon.`;
+        ? 'Your current dependable income appears to cover your essential monthly needs.'
+        : `At the current gap, investable assets may cover roughly ${yearsCovered.toFixed(1)} years compared with a ${yearsToPlan}-year planning horizon.`;
 
-      return `<strong style="color:var(--text)">${clientName}</strong> has a <strong style="color:var(--text)">${status}</strong> retirement paycheck profile. Guaranteed income covers <strong style="color:var(--text)">${Math.round(coverageRatio * 100)}%</strong> of current monthly need. Estimated healthcare and Medicare pressure is <strong style="color:var(--text)">${currency(healthcareBurden)}</strong> per month. ${durabilityText} Risk tolerance is listed as <strong style="color:var(--text)">${riskTolerance}</strong>.`;
+      return `<strong style="color:var(--text)">${clientName}</strong> has a <strong style="color:var(--text)">${status}</strong> retirement paycheck profile. Dependable income currently covers <strong style="color:var(--text)">${Math.round(coverageRatio * 100)}%</strong> of monthly need. Estimated healthcare and Medicare costs are <strong style="color:var(--text)">${currency(healthcareBurden)}</strong> per month. ${durabilityText} Comfort with market risk is listed as <strong style="color:var(--text)">${riskTolerance}</strong>.`;
     }
 
     function setScoreRing(score) {
@@ -1041,28 +1067,28 @@
       const gapReduction = currentData.incomeGap - revisedGap;
       const scoreIncrease = revisedScore - currentData.score;
 
-      let narrative = `A sample hybrid income strategy reallocating <strong style="color:var(--text)">${allocPct}% of savings</strong> may produce approximately <strong style="color:var(--text)">${currency(monthlyIncome)}</strong> in additional guaranteed monthly income using an illustrative payout rate of <strong style="color:var(--text)">${payoutPct.toFixed(1)}%</strong>. `;
+      let narrative = `One example of a strategy that reallocates <strong style="color:var(--text)">${allocPct}% of savings</strong> may produce approximately <strong style="color:var(--text)">${currency(monthlyIncome)}</strong> in additional dependable monthly income using an example payout rate of <strong style="color:var(--text)">${payoutPct.toFixed(1)}%</strong>. `;
 
       if (gapReduction > 0) {
-        narrative += `That reduces the income gap by <strong style="color:var(--text)">${currency(gapReduction)}</strong> per month and improves the retirement score by <strong style="color:var(--text)">${scoreIncrease}</strong> points.`;
+        narrative += `That may reduce the income gap by <strong style="color:var(--text)">${currency(gapReduction)}</strong> per month and improve the retirement score by <strong style="color:var(--text)">${scoreIncrease}</strong> points.`;
       } else {
-        narrative += `At this allocation, the current lifestyle need still exceeds guaranteed income, which means the client may still be exposed to ongoing withdrawal pressure.`;
+        narrative += `At this allocation, current monthly needs would still be higher than dependable income, which means ongoing withdrawals may still be needed.`;
       }
 
       if (revisedGap === 0) {
-        narrative += ` The modeled guaranteed income fully covers the current monthly lifestyle need, which is usually the moment where the conversation changes from product resistance to relief.`;
+        narrative += ` The modeled dependable income fully covers the current monthly lifestyle need, which may provide a greater sense of stability and confidence.`;
       }
 
       document.getElementById('strategyNarrative').innerHTML = narrative;
 
       document.getElementById('reportStrategy').textContent = revisedGap === 0
-        ? 'A hybrid strategy may fully cover the current monthly need with guaranteed income and reduce market dependency.'
-        : `A hybrid strategy may reduce the gap from ${currency(currentData.incomeGap)} to ${currency(revisedGap)} while retaining some liquid or growth-oriented assets.`;
+        ? 'A strategy that adds dependable income may fully cover the current monthly need and reduce reliance on market withdrawals.'
+        : `A strategy that adds dependable income may reduce the gap from ${currency(currentData.incomeGap)} to ${currency(revisedGap)} while still keeping some assets available for liquidity or growth.`;
     }
 
     function emailResults() {
       if (!currentData) {
-        alert('Run the planner first.');
+        alert('Please run the planner first.');
         return;
       }
 
@@ -1086,12 +1112,12 @@ Estimated Healthcare + Medicare Burden: ${currency(currentData.healthcareBurden)
 IRMAA Tier: ${currentData.irmaa.tier}
 Estimated Years Assets May Cover Gap: ${currentData.yearsCovered > 98 ? '99+' : currentData.yearsCovered.toFixed(1)}
 
-Illustrative Hybrid Strategy:
+Example Income Strategy:
 Allocated Amount: ${currency(annuityAmount)}
-Estimated Guaranteed Monthly Income: ${currency(monthlyIncome)}
+Estimated Monthly Dependable Income: ${currency(monthlyIncome)}
 Revised Monthly Income Gap: ${currency(revisedGap)}
 
-This is an educational planning summary, not a quote or guarantee. Reply to schedule a personalized review.
+This is an educational planning summary, not a quote or guarantee. Please reach out to review your results together.
 `
       );
 
