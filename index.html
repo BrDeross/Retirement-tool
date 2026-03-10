@@ -421,12 +421,7 @@
       margin-top: 12px;
     }
 
-    input[type="range"] {
-      padding: 0;
-      background: transparent;
-      border: 0;
-      accent-color: var(--gold);
-    }
+    
 
     .callout {
       margin-top: 18px;
@@ -705,7 +700,7 @@
           </div>
           <div class="field">
             <label for="payoutRateInput">Example Monthly Payout Rate (%)</label>
-            <input id="payoutRateInput" type="number" min="0.1" step="0.1" value="0.6">
+            <input id="payoutRateInput" type="number" min="0.1" step="0.1" value="5.0">
           </div>
         </div>
 
@@ -784,7 +779,7 @@
             </div>
           </div>
           <div class="range-wrap">
-            <input id="payoutSlider" type="range" min="0.3" max="1.2" step="0.1" value="0.6" oninput="updateAnnuitySimulation()">
+            <input id="payoutSlider" type="range" min="1" max="8" step="0.1" value="5.0" oninput="updateAnnuitySimulation()">
             <div class="mini-card" style="min-width: 180px; text-align:center;">
               Monthly Payout Rate
               <strong id="payoutDisplay">0.6%</strong>
@@ -1047,14 +1042,14 @@
 
     function syncSimulationInputs() {
       document.getElementById('annuitySlider').value = Math.min(Math.max(getVal('annuityPercentInput'), 0), 70);
-      document.getElementById('payoutSlider').value = Math.min(Math.max(getVal('payoutRateInput'), 0.3), 1.2);
+      document.getElementById('payoutSlider').value = Math.min(Math.max(getVal('payoutRateInput'), 1), 8);
     }
 
     function updateAnnuitySimulation() {
       if (!currentData) return;
 
       const allocPct = parseFloat(document.getElementById('annuitySlider').value) || 0;
-      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 0.6;
+      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 5.0;
       document.getElementById('allocDisplay').textContent = `${allocPct}%`;
       document.getElementById('payoutDisplay').textContent = `${payoutPct.toFixed(1)}%`;
 
@@ -1100,7 +1095,7 @@
       }
 
       const allocPct = parseFloat(document.getElementById('annuitySlider').value) || 0;
-      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 0.6;
+      const payoutPct = parseFloat(document.getElementById('payoutSlider').value) || 5.0;
       const annuityAmount = currentData.savings * (allocPct / 100);
       const monthlyIncome = annuityAmount * (payoutPct / 100);
       const revisedGap = Math.max(currentData.monthlyNeed - (currentData.guaranteedIncome + monthlyIncome), 0);
